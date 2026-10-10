@@ -5,276 +5,443 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimus School - Home for Champions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: '#012f5b',
-                        'navy-dark': '#011d3a',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        
-        .hero-gradient {
-            background: linear-gradient(135deg, rgba(1, 47, 91, 0.85) 0%, rgba(2, 62, 113, 0.7) 50%, rgba(0, 119, 182, 0.6) 100%);
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1f2937; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        ul { list-style: none; }
+
+        /* Colors */
+        :root {
+            --navy: #012f5b;
+            --navy-dark: #011d3a;
+            --gold: #f59e0b;
+            --gold-dark: #d97706;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
         }
-        .gold-gradient {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+
+        /* Top Bar */
+        .top-bar { background: var(--navy); color: white; padding: 8px 5%; font-size: 0.875rem; display: flex; justify-content: space-between; align-items: center; }
+        .top-bar-left { display: flex; gap: 20px; align-items: center; }
+        .top-bar-left a { display: flex; align-items: center; gap: 8px; color: white; transition: color 0.3s; }
+        .top-bar-left a:hover { color: var(--gold); }
+        .top-bar-left i { color: var(--gold); }
+        .top-bar-right { display: flex; gap: 16px; }
+        .top-bar-right a { color: white; transition: color 0.3s; }
+        .top-bar-right a:hover { color: var(--gold); }
+
+        /* Navigation */
+        .navbar { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 1000; transition: box-shadow 0.3s; }
+        .navbar.scrolled { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1280px; margin: 0 auto; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 48px; height: 48px; background: var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .logo-icon span { color: var(--gold); font-weight: 700; font-size: 1.25rem; }
+        .logo-text h1 { font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+        .logo-text p { font-size: 0.75rem; color: var(--gray-500); margin-top: -4px; }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-links a { font-weight: 500; color: var(--gray-600); transition: color 0.3s; }
+        .nav-links a:first-child { color: var(--navy); }
+        .nav-links a:hover { color: #d97706; }
+        .btn-apply { background: linear-gradient(135deg, #f59e0b, #d97706); color: white !important; padding: 10px 24px; border-radius: 50px; font-weight: 500; box-shadow: 0 4px 12px rgba(245,158,11,0.3); transition: opacity 0.3s; }
+        .btn-apply:hover { opacity: 0.9; }
+        .hamburger { display: none; background: none; border: none; font-size: 1.5rem; color: var(--navy); cursor: pointer; }
+        .mobile-menu { display: none; flex-direction: column; gap: 8px; padding: 16px 0; border-top: 1px solid var(--gray-100); }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a { padding: 8px 16px; border-radius: 8px; font-weight: 500; color: var(--gray-600); }
+        .mobile-menu a:hover { background: var(--gray-50); }
+        .mobile-menu .btn-apply { text-align: center; margin-top: 8px; }
+
+        /* Hero */
+        .hero { position: relative; height: 700px; overflow: hidden; display: flex; align-items: center; }
+        .hero-bg { position: absolute; inset: 0; }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(1,47,91,0.85) 0%, rgba(2,62,113,0.7) 50%, rgba(0,119,182,0.6) 100%); }
+        .hero-content { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 20px; width: 100%; }
+        .hero-badge { display: inline-block; background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.3); border-radius: 50px; padding: 6px 16px; margin-bottom: 16px; }
+        .hero-badge span { color: #fcd34d; font-size: 0.875rem; font-weight: 500; }
+        .hero h1 { font-size: 4rem; font-weight: 700; color: white; margin-bottom: 16px; line-height: 1.1; }
+        .hero p { font-size: 1.25rem; color: #e5e7eb; margin-bottom: 32px; max-width: 600px; }
+        .hero-buttons { display: flex; flex-wrap: wrap; gap: 16px; }
+        .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; box-shadow: 0 4px 12px rgba(245,158,11,0.3); display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.3s; }
+        .btn-primary:hover { opacity: 0.9; }
+        .btn-secondary { border: 2px solid rgba(255,255,255,0.3); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        .hero-dots { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 3; }
+        .hero-dot { height: 10px; border-radius: 50px; border: none; cursor: pointer; transition: all 0.3s; }
+        .hero-dot.active { width: 40px; background: var(--gold); }
+        .hero-dot:not(.active) { width: 10px; background: rgba(255,255,255,0.5); }
+        .hero-decor { position: absolute; top: 80px; right: 40px; width: 80px; height: 80px; border: 2px solid rgba(245,158,11,0.2); border-radius: 50%; animation: pulse 3s ease-in-out infinite; }
+
+        /* Sections */
+        section { padding: 80px 20px; }
+        .container { max-width: 1280px; margin: 0 auto; }
+        .section-badge { display: inline-block; background: #fef3c7; border-radius: 50px; padding: 6px 16px; margin-bottom: 16px; }
+        .section-badge span { color: #92400e; font-size: 0.875rem; font-weight: 500; }
+        .section-title { font-size: 2.25rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+        .section-subtitle { font-size: 1.125rem; color: var(--gray-600); max-width: 640px; }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+        .about-text h2 { font-size: 2.25rem; font-weight: 700; color: var(--navy); margin-bottom: 24px; }
+        .about-text h2 .highlight { background: linear-gradient(135deg, #f59e0b, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .about-text p { color: var(--gray-600); font-size: 1.125rem; line-height: 1.8; margin-bottom: 24px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 1.875rem; font-weight: 700; color: var(--navy); }
+        .stat-label { font-size: 0.875rem; color: var(--gray-500); margin-top: 4px; }
+        .about-image-wrap { position: relative; }
+        .about-image { border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+        .about-image img { width: 100%; height: 400px; object-fit: cover; }
+        .award-card { position: absolute; bottom: -24px; left: -24px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 20px; max-width: 200px; }
+        .award-card-inner { display: flex; align-items: center; gap: 12px; }
+        .award-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .award-icon i { color: white; font-size: 1.125rem; }
+        .award-text .title { font-weight: 700; color: var(--navy); }
+        .award-text .sub { font-size: 0.875rem; color: var(--gray-500); }
+        .decor-box { position: absolute; top: -16px; right: -16px; width: 96px; height: 96px; border: 4px solid rgba(245,158,11,0.3); border-radius: 16px; }
+
+        /* Programs */
+        .bg-gray { background: var(--gray-50); }
+        .programs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 64px; }
+        .program-card { background: white; border-radius: 16px; overflow: hidden; transition: all 0.3s; }
+        .program-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .program-img { position: relative; height: 192px; overflow: hidden; }
+        .program-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .program-card:hover .program-img img { transform: scale(1.1); }
+        .program-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); }
+        .program-img-icon { position: absolute; bottom: 16px; left: 16px; width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .program-img-icon i { color: white; }
+        .program-body { padding: 24px; }
+        .program-body h3 { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .program-body p { color: var(--gray-600); font-size: 0.875rem; line-height: 1.6; }
+        .program-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: #d97706; font-weight: 500; font-size: 0.875rem; transition: color 0.3s; }
+        .program-link:hover { color: #b45309; }
+
+        /* Why Choose Us */
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px; }
+        .feature-card { padding: 24px; border-radius: 16px; border: 1px solid var(--gray-100); transition: all 0.3s; }
+        .feature-card:hover { border-color: #fde68a; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .feature-icon-wrap { width: 56px; height: 56px; background: #fffbeb; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; transition: all 0.3s; }
+        .feature-card:hover .feature-icon-wrap { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .feature-icon-wrap i { font-size: 1.25rem; color: #d97706; transition: color 0.3s; }
+        .feature-card:hover .feature-icon-wrap i { color: white; }
+        .feature-card h3 { font-size: 1.125rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+        .feature-card p { color: var(--gray-600); font-size: 0.875rem; line-height: 1.6; }
+
+        /* Team */
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 64px; }
+        .team-member { text-align: center; }
+        .team-avatar { position: relative; width: 160px; height: 160px; margin: 0 auto 16px; }
+        .team-avatar-circle { width: 100%; height: 100%; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.3s; }
+        .team-member:hover .team-avatar-circle { transform: scale(1.05); }
+        .team-avatar-circle span { color: white; font-size: 1.875rem; font-weight: 700; }
+        .team-role-badge { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); white-space: nowrap; }
+        .team-member h4 { font-weight: 700; color: var(--navy); margin-top: 16px; }
+        .team-member .role { color: #d97706; font-weight: 500; font-size: 0.875rem; }
+        .team-member .campus { color: var(--gray-500); font-size: 0.75rem; margin-top: 4px; }
+
+        /* Testimonials */
+        .testimonials { background: var(--navy); position: relative; overflow: hidden; }
+        .testimonials .section-title { color: white; }
+        .testimonials .section-subtitle { color: #d1d5db; }
+        .testimonials .section-badge { background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.3); }
+        .testimonials .section-badge span { color: #fcd34d; }
+        .testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 64px; }
+        .testi-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border-radius: 16px; padding: 32px; border: 1px solid rgba(255,255,255,0.1); }
+        .testi-stars { display: flex; gap: 4px; margin-bottom: 16px; }
+        .testi-stars i { color: var(--gold); }
+        .testi-card p { color: #e5e7eb; font-style: italic; line-height: 1.8; margin-bottom: 24px; }
+        .testi-author { display: flex; align-items: center; gap: 12px; }
+        .testi-author-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .testi-author-avatar span { color: white; font-weight: 700; }
+        .testi-author-name { color: white; font-weight: 600; }
+        .testi-author-role { color: var(--gold); font-size: 0.875rem; }
+
+        /* Admissions */
+        .admissions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-top: 48px; }
+        .admissions-text p { color: var(--gray-600); font-size: 1.125rem; line-height: 1.8; margin-bottom: 24px; }
+        .apply-box { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 32px; }
+        .apply-box h3 { font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .apply-box h3 i { color: var(--gold); }
+        .apply-box > p { color: var(--gray-600); margin-bottom: 16px; }
+        .apply-list { display: flex; flex-direction: column; gap: 12px; }
+        .apply-list li { display: flex; align-items: center; gap: 12px; color: var(--gray-600); }
+        .check-icon { width: 24px; height: 24px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .check-icon i { color: white; font-size: 0.75rem; }
+        .steps { display: flex; flex-direction: column; gap: 24px; }
+        .step { display: flex; gap: 16px; align-items: flex-start; }
+        .step-num { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .step-num span { color: white; font-weight: 700; font-size: 1.25rem; }
+        .step-num.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .step-num.navy { background: var(--navy); }
+        .step-text h4 { font-weight: 700; color: var(--navy); font-size: 1.125rem; }
+        .step-text p { color: var(--gray-600); margin-top: 4px; }
+
+        /* CTA */
+        .cta { background: linear-gradient(135deg, #f59e0b, #d97706); padding: 64px 20px; position: relative; overflow: hidden; }
+        .cta-pattern { position: absolute; inset: 0; opacity: 0.1; background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 30px 30px; }
+        .cta-content { position: relative; text-align: center; max-width: 1280px; margin: 0 auto; }
+        .cta h2 { font-size: 2.25rem; font-weight: 700; color: white; margin-bottom: 16px; }
+        .cta p { color: rgba(255,255,255,0.9); font-size: 1.125rem; max-width: 640px; margin: 0 auto 32px; }
+        .cta-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        .btn-dark { background: var(--navy); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: background 0.3s; }
+        .btn-dark:hover { background: var(--navy-dark); }
+        .btn-outline-white { border: 2px solid white; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
+
+        /* Footer */
+        .footer { background: var(--navy-dark); color: white; padding: 64px 20px 24px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 1280px; margin: 0 auto; }
+        .footer-col h3, .footer-col h4 { margin-bottom: 24px; }
+        .footer-col h4 { font-size: 1.125rem; }
+        .footer-col p { color: var(--gray-400); line-height: 1.8; margin-bottom: 24px; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .footer-social a:hover { background: var(--gold); }
+        .footer-links { display: flex; flex-direction: column; gap: 12px; }
+        .footer-links a { color: var(--gray-400); transition: color 0.3s; display: flex; align-items: center; gap: 8px; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-links a i { font-size: 0.75rem; color: var(--gold); }
+        .footer-contact li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; color: var(--gray-400); }
+        .footer-contact li .icon { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .footer-contact li .icon i { color: var(--gold); font-size: 0.875rem; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); max-width: 1280px; margin: 40px auto 0; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+        .footer-bottom p { color: var(--gray-400); font-size: 0.875rem; }
+        .footer-bottom-links { display: flex; gap: 24px; }
+        .footer-bottom-links a { color: var(--gray-400); font-size: 0.875rem; transition: color 0.3s; }
+        .footer-bottom-links a:hover { color: var(--gold); }
+
+        /* Scroll to top */
+        .scroll-top { position: fixed; bottom: 32px; right: 32px; width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border: none; cursor: pointer; z-index: 999; transition: opacity 0.3s; }
+        .scroll-top:hover { opacity: 0.9; }
+        .scroll-top i { color: white; }
+
+        /* Animations */
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .animate-pulse { animation: pulse 3s ease-in-out infinite; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .hero h1 { font-size: 3rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .programs-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .testi-grid { grid-template-columns: 1fr; }
+            .admissions-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        .nav-shadow {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        @media (max-width: 768px) {
+            .top-bar { display: none; }
+            .hero { height: 600px; }
+            .hero h1 { font-size: 2.25rem; }
+            .hero p { font-size: 1rem; }
+            .section-title { font-size: 1.75rem; }
+            .programs-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats { grid-template-columns: repeat(3, 1fr); }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-decor { display: none; }
         }
-        .card-hover {
-            transition: all 0.3s ease;
+        @media (max-width: 480px) {
+            .team-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; }
+            .cta-buttons { flex-direction: column; align-items: center; }
         }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulseSlow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.8s ease forwards; }
-        .animate-pulse-slow { animation: pulseSlow 3s ease-in-out infinite; }
-        
-        .slide { display: none; }
-        .slide.active { display: block; }
-        
-        #mobileMenu { display: none; }
-        #mobileMenu.open { display: flex; }
     </style>
 </head>
-<body class="bg-white min-h-screen">
+<body>
 
     <!-- Top Bar -->
-    <div class="bg-[#012f5b] text-white text-sm py-2 hidden md:block">
-        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center gap-6">
-                <a href="mailto:admin@optimusschool.ng" class="flex items-center gap-2 hover:text-amber-400 transition-colors">
-                    <i class="fas fa-envelope text-amber-400"></i>
-                    <span>admin@optimusschool.ng</span>
-                </a>
-                <a href="tel:+2348012345678" class="flex items-center gap-2 hover:text-amber-400 transition-colors">
-                    <i class="fas fa-phone text-amber-400"></i>
-                    <span>+234 801-234-5678</span>
-                </a>
-            </div>
-            <div class="flex items-center gap-4">
-                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="hover:text-amber-400 transition-colors"><i class="fab fa-youtube"></i></a>
-            </div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href="mailto:admin@optimusschool.ng"><i class="fas fa-envelope"></i> admin@optimusschool.ng</a>
+            <a href="tel:+2348012345678"><i class="fas fa-phone"></i> +234 801-234-5678</a>
+        </div>
+        <div class="top-bar-right">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav id="navbar" class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <a href="#" class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-[#012f5b] rounded-full flex items-center justify-center">
-                        <span class="text-amber-400 font-bold text-xl">O</span>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-[#012f5b]">OPTIMUS</h1>
-                        <p class="text-xs text-gray-500 -mt-1">SCHOOL</p>
-                    </div>
-                </a>
-                <div class="hidden lg:flex items-center gap-8">
-                    <a href="#home" class="text-[#012f5b] font-medium hover:text-amber-600 transition-colors">Home</a>
-                    <a href="#about" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">About</a>
-                    <a href="#programs" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">Programs</a>
-                    <a href="#team" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">Our Team</a>
-                    <a href="#testimonials" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">Testimonials</a>
-                    <a href="#admissions" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">Admissions</a>
-                    <a href="#contact" class="text-gray-600 font-medium hover:text-amber-600 transition-colors">Contact</a>
-                    <a href="#admissions" class="gold-gradient text-white px-6 py-2.5 rounded-full font-medium hover:opacity-90 transition-opacity shadow-lg">Apply Now</a>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"><span>O</span></div>
+                <div class="logo-text">
+                    <h1>OPTIMUS</h1>
+                    <p>SCHOOL</p>
                 </div>
-                <button onclick="toggleMenu()" class="lg:hidden text-[#012f5b] text-2xl">
-                    <i id="menuIcon" class="fas fa-bars"></i>
-                </button>
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#programs">Programs</a>
+                <a href="#team">Our Team</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#admissions">Admissions</a>
+                <a href="#contact">Contact</a>
+                <a href="#admissions" class="btn-apply">Apply Now</a>
             </div>
-            <div id="mobileMenu" class="lg:hidden pb-4 border-t border-gray-100 flex-col gap-3 pt-4">
-                <a href="#home" onclick="closeMenu()" class="text-[#012f5b] font-medium px-4 py-2 hover:bg-gray-50 rounded">Home</a>
-                <a href="#about" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">About</a>
-                <a href="#programs" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">Programs</a>
-                <a href="#team" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">Our Team</a>
-                <a href="#testimonials" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">Testimonials</a>
-                <a href="#admissions" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">Admissions</a>
-                <a href="#contact" onclick="closeMenu()" class="text-gray-600 font-medium px-4 py-2 hover:bg-gray-50 rounded">Contact</a>
-                <a href="#admissions" onclick="closeMenu()" class="gold-gradient text-white px-6 py-2.5 rounded-full font-medium text-center mt-2">Apply Now</a>
-            </div>
+            <button class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars" id="menuIcon"></i>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#home" onclick="closeMenu()">Home</a>
+            <a href="#about" onclick="closeMenu()">About</a>
+            <a href="#programs" onclick="closeMenu()">Programs</a>
+            <a href="#team" onclick="closeMenu()">Our Team</a>
+            <a href="#testimonials" onclick="closeMenu()">Testimonials</a>
+            <a href="#admissions" onclick="closeMenu()">Admissions</a>
+            <a href="#contact" onclick="closeMenu()">Contact</a>
+            <a href="#admissions" class="btn-apply" onclick="closeMenu()">Apply Now</a>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative h-[600px] md:h-[700px] overflow-hidden">
-        <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Optimus School" class="w-full h-full object-cover">
-            <div class="hero-gradient absolute inset-0"></div>
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Optimus School">
+            <div class="hero-overlay"></div>
         </div>
-        <div class="relative h-full flex items-center">
-            <div class="max-w-7xl mx-auto px-4 w-full">
-                <div class="max-w-3xl" id="heroContent">
-                    <div class="inline-block bg-amber-500/20 border border-amber-400/30 rounded-full px-4 py-1.5 mb-4">
-                        <span class="text-amber-300 text-sm font-medium">OPTIMUS SCHOOL</span>
-                    </div>
-                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight" id="heroTitle">Nurturing Excellence</h1>
-                    <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-xl" id="heroDesc">Where every child's potential is unlocked and champions are made</p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#admissions" class="gold-gradient text-white px-8 py-3.5 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg inline-flex items-center gap-2">
-                            Apply Now <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <a href="#about" class="border-2 border-white/30 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-white/10 transition-colors inline-flex items-center gap-2">
-                            Learn More <i class="fas fa-chevron-down"></i>
-                        </a>
-                    </div>
-                </div>
+        <div class="hero-content">
+            <div class="hero-badge"><span>OPTIMUS SCHOOL</span></div>
+            <h1 id="heroTitle">Nurturing Excellence</h1>
+            <p id="heroDesc">Where every child's potential is unlocked and champions are made</p>
+            <div class="hero-buttons">
+                <a href="#admissions" class="btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
+                <a href="#about" class="btn-secondary">Learn More <i class="fas fa-chevron-down"></i></a>
             </div>
         </div>
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
-            <button onclick="goToSlide(0)" class="slide-dot h-2.5 rounded-full transition-all duration-300 w-10 bg-amber-400"></button>
-            <button onclick="goToSlide(1)" class="slide-dot h-2.5 rounded-full transition-all duration-300 w-2.5 bg-white/50"></button>
-            <button onclick="goToSlide(2)" class="slide-dot h-2.5 rounded-full transition-all duration-300 w-2.5 bg-white/50"></button>
+        <div class="hero-dots">
+            <button class="hero-dot active" onclick="goToSlide(0)"></button>
+            <button class="hero-dot" onclick="goToSlide(1)"></button>
+            <button class="hero-dot" onclick="goToSlide(2)"></button>
         </div>
-        <div class="absolute top-20 right-10 w-20 h-20 border-2 border-amber-400/20 rounded-full animate-pulse-slow hidden md:block"></div>
+        <div class="hero-decor animate-pulse"></div>
     </section>
 
-    <!-- Welcome / About -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <div class="inline-block bg-amber-100 rounded-full px-4 py-1.5 mb-4">
-                        <span class="text-amber-700 text-sm font-medium">Welcome to Optimus School</span>
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[#012f5b] mb-6">Shaping Tomorrow's <span class="text-gradient">Leaders</span> Today</h2>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-6">Welcome to Optimus School, a thriving educational community where students are empowered to excel in the 21st century. Trusted by parents for our well-trained staff, intensive curriculum, and stimulating environment, we combine innovative teaching strategies, cutting-edge technology, and purpose-built facilities to nurture confidence, self-esteem, and a lifelong love for learning.</p>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-8">Our goal is to raise globally-minded, result-driven students rooted in strong values and prepared to thrive anywhere in the world.</p>
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-[#012f5b]">15+</div>
-                            <div class="text-sm text-gray-500 mt-1">Years of Excellence</div>
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <div class="section-badge"><span>Welcome to Optimus School</span></div>
+                    <h2>Shaping Tomorrow's <span class="highlight">Leaders</span> Today</h2>
+                    <p>Welcome to Optimus School, a thriving educational community where students are empowered to excel in the 21st century. Trusted by parents for our well-trained staff, intensive curriculum, and stimulating environment, we combine innovative teaching strategies, cutting-edge technology, and purpose-built facilities to nurture confidence, self-esteem, and a lifelong love for learning.</p>
+                    <p>Our goal is to raise globally-minded, result-driven students rooted in strong values and prepared to thrive anywhere in the world.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years of Excellence</div>
                         </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-[#012f5b]">2000+</div>
-                            <div class="text-sm text-gray-500 mt-1">Students Enrolled</div>
+                        <div class="stat-item">
+                            <div class="stat-number">2000+</div>
+                            <div class="stat-label">Students Enrolled</div>
                         </div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-[#012f5b]">98%</div>
-                            <div class="text-sm text-gray-500 mt-1">Success Rate</div>
+                        <div class="stat-item">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Success Rate</div>
                         </div>
                     </div>
-                    <a href="#programs" class="inline-flex items-center gap-2 mt-8 text-[#012f5b] font-semibold hover:text-amber-600 transition-colors">Read More <i class="fas fa-arrow-right"></i></a>
+                    <a href="#programs" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;color:var(--navy);font-weight:600;">Read More <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="relative">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Optimus School Campus" class="w-full h-[400px] object-cover">
+                <div class="about-image-wrap">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Optimus School Campus">
                     </div>
-                    <div class="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-xl p-5 max-w-[200px]">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center">
-                                <i class="fas fa-award text-white text-lg"></i>
-                            </div>
-                            <div>
-                                <div class="font-bold text-[#012f5b]">Best School</div>
-                                <div class="text-sm text-gray-500">Award 2024</div>
+                    <div class="award-card">
+                        <div class="award-card-inner">
+                            <div class="award-icon"><i class="fas fa-award"></i></div>
+                            <div class="award-text">
+                                <div class="title">Best School</div>
+                                <div class="sub">Award 2024</div>
                             </div>
                         </div>
                     </div>
-                    <div class="absolute -top-4 -right-4 w-24 h-24 border-4 border-amber-400/30 rounded-2xl"></div>
+                    <div class="decor-box"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Programs -->
-    <section id="programs" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <div class="inline-block bg-amber-100 rounded-full px-4 py-1.5 mb-4">
-                    <span class="text-amber-700 text-sm font-medium">Our Programs</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-[#012f5b] mb-4">What We Offer</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">We offer quality education for your child, with our highly skilled and qualified teachers dedicated to bringing out the best in every student.</p>
+    <section id="programs" class="bg-gray">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-badge"><span>Our Programs</span></div>
+                <h2 class="section-title">What We Offer</h2>
+                <p class="section-subtitle mx-auto">We offer quality education for your child, with our highly skilled and qualified teachers dedicated to bringing out the best in every student.</p>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white rounded-2xl overflow-hidden card-hover group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1596464787669-5188148945f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Creche" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 w-12 h-12 gold-gradient rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-baby text-white"></i>
-                        </div>
+            <div class="programs-grid">
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1596464787669-5188148945f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Creche">
+                        <div class="program-img-overlay"></div>
+                        <div class="program-img-icon"><i class="fas fa-baby"></i></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-[#012f5b] mb-2">Crèche</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Where every child's journey begins with love, care, and early learning in a safe, nurturing environment.</p>
-                        <a href="#admissions" class="inline-flex items-center gap-2 mt-4 text-amber-600 font-medium text-sm hover:text-amber-700 transition-colors">Learn More <i class="fas fa-arrow-right text-xs"></i></a>
+                    <div class="program-body">
+                        <h3>Crèche</h3>
+                        <p>Where every child's journey begins with love, care, and early learning in a safe, nurturing environment.</p>
+                        <a href="#admissions" class="program-link">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl overflow-hidden card-hover group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Early Years" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 w-12 h-12 gold-gradient rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-puzzle-piece text-white"></i>
-                        </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Early Years">
+                        <div class="program-img-overlay"></div>
+                        <div class="program-img-icon"><i class="fas fa-puzzle-piece"></i></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-[#012f5b] mb-2">Early Years Foundation</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Building strong foundations for lifelong learning and growth through play-based and structured activities.</p>
-                        <a href="#admissions" class="inline-flex items-center gap-2 mt-4 text-amber-600 font-medium text-sm hover:text-amber-700 transition-colors">Learn More <i class="fas fa-arrow-right text-xs"></i></a>
+                    <div class="program-body">
+                        <h3>Early Years Foundation</h3>
+                        <p>Building strong foundations for lifelong learning and growth through play-based and structured activities.</p>
+                        <a href="#admissions" class="program-link">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl overflow-hidden card-hover group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Primary" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 w-12 h-12 gold-gradient rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-book-open text-white"></i>
-                        </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1580582932707-520aedf4a0b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="Primary">
+                        <div class="program-img-overlay"></div>
+                        <div class="program-img-icon"><i class="fas fa-book-open"></i></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-[#012f5b] mb-2">Primary School</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Empowering young minds for academic excellence and personal growth with a comprehensive curriculum.</p>
-                        <a href="#admissions" class="inline-flex items-center gap-2 mt-4 text-amber-600 font-medium text-sm hover:text-amber-700 transition-colors">Learn More <i class="fas fa-arrow-right text-xs"></i></a>
+                    <div class="program-body">
+                        <h3>Primary School</h3>
+                        <p>Empowering young minds for academic excellence and personal growth with a comprehensive curriculum.</p>
+                        <a href="#admissions" class="program-link">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl overflow-hidden card-hover group">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="High School" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 w-12 h-12 gold-gradient rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-graduation-cap text-white"></i>
-                        </div>
+                <div class="program-card">
+                    <div class="program-img">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60" alt="High School">
+                        <div class="program-img-overlay"></div>
+                        <div class="program-img-icon"><i class="fas fa-graduation-cap"></i></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-[#012f5b] mb-2">High School</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">Shaping future leaders for global impact through advanced academics, leadership, and character development.</p>
-                        <a href="#admissions" class="inline-flex items-center gap-2 mt-4 text-amber-600 font-medium text-sm hover:text-amber-700 transition-colors">Learn More <i class="fas fa-arrow-right text-xs"></i></a>
+                    <div class="program-body">
+                        <h3>High School</h3>
+                        <p>Shaping future leaders for global impact through advanced academics, leadership, and character development.</p>
+                        <a href="#admissions" class="program-link">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -282,229 +449,183 @@
     </section>
 
     <!-- Why Choose Us -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <div class="inline-block bg-amber-100 rounded-full px-4 py-1.5 mb-4">
-                    <span class="text-amber-700 text-sm font-medium">Why Choose Us</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-[#012f5b] mb-4">Why Parents Choose Optimus</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">We provide a complete educational experience that nurtures the whole child — academically, socially, and morally.</p>
+    <section>
+        <div class="container">
+            <div class="text-center">
+                <div class="section-badge"><span>Why Choose Us</span></div>
+                <h2 class="section-title">Why Parents Choose Optimus</h2>
+                <p class="section-subtitle mx-auto">We provide a complete educational experience that nurtures the whole child — academically, socially, and morally.</p>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-chalkboard-teacher text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">Expert Teachers</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Our highly qualified and experienced teachers use modern teaching methods to deliver exceptional education.</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <h3>Expert Teachers</h3>
+                    <p>Our highly qualified and experienced teachers use modern teaching methods to deliver exceptional education.</p>
                 </div>
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-laptop-code text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">Modern Technology</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">State-of-the-art computer labs, smart classrooms, and digital learning tools for 21st-century education.</p>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Modern Technology</h3>
+                    <p>State-of-the-art computer labs, smart classrooms, and digital learning tools for 21st-century education.</p>
                 </div>
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-futbol text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">Sports & Arts</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Comprehensive extracurricular programs including sports, music, drama, and creative arts.</p>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-futbol"></i></div>
+                    <h3>Sports & Arts</h3>
+                    <p>Comprehensive extracurricular programs including sports, music, drama, and creative arts.</p>
                 </div>
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-shield-alt text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">Safe Environment</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Secure campus with CCTV surveillance, trained security personnel, and strict safety protocols.</p>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Safe Environment</h3>
+                    <p>Secure campus with CCTV surveillance, trained security personnel, and strict safety protocols.</p>
                 </div>
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-bus text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">School Transport</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Comfortable and safe school bus service covering major routes within the city.</p>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-bus"></i></div>
+                    <h3>School Transport</h3>
+                    <p>Comfortable and safe school bus service covering major routes within the city.</p>
                 </div>
-                <div class="p-6 rounded-2xl border border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all duration-300 group">
-                    <div class="w-14 h-14 bg-amber-50 group-hover:gold-gradient rounded-xl flex items-center justify-center mb-4 transition-all duration-300">
-                        <i class="fas fa-utensils text-xl text-amber-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-[#012f5b] mb-2">Nutritious Meals</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Well-balanced and hygienically prepared meals served daily in our modern cafeteria.</p>
+                <div class="feature-card">
+                    <div class="feature-icon-wrap"><i class="fas fa-utensils"></i></div>
+                    <h3>Nutritious Meals</h3>
+                    <p>Well-balanced and hygienically prepared meals served daily in our modern cafeteria.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Team -->
-    <section id="team" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <div class="inline-block bg-amber-100 rounded-full px-4 py-1.5 mb-4">
-                    <span class="text-amber-700 text-sm font-medium">Our Team</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-[#012f5b] mb-4">Meet Our Team</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Highly professional and well-trained staff with years of experience dedicated to your child's success.</p>
+    <section id="team">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-badge"><span>Our Team</span></div>
+                <h2 class="section-title">Meet Our Team</h2>
+                <p class="section-subtitle mx-auto">Highly professional and well-trained staff with years of experience dedicated to your child's success.</p>
             </div>
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-blue-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">AJ</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Vice Principal</div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#2563eb;"><span>AJ</span></div>
+                        <div class="team-role-badge">Principal</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Dr. Adebayo Johnson</h4>
-                    <p class="text-amber-600 font-medium text-sm">Principal</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Main Campus</p>
+                    <h4>Dr. Adebayo Johnson</h4>
+                    <p class="role">Principal</p>
+                    <p class="campus">Optimus Main Campus</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-purple-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">FO</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">VP Academics</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#9333ea;"><span>FO</span></div>
+                        <div class="team-role-badge">VP Academics</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mrs. Funke Okafor</h4>
-                    <p class="text-amber-600 font-medium text-sm">Vice Principal Academics</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Main Campus</p>
+                    <h4>Mrs. Funke Okafor</h4>
+                    <p class="role">Vice Principal Academics</p>
+                    <p class="campus">Optimus Main Campus</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-green-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">CE</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Head of Admin</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#16a34a;"><span>CE</span></div>
+                        <div class="team-role-badge">Head of Admin</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mr. Chukwuma Eze</h4>
-                    <p class="text-amber-600 font-medium text-sm">Head of Administration</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Main Campus</p>
+                    <h4>Mr. Chukwuma Eze</h4>
+                    <p class="role">Head of Administration</p>
+                    <p class="campus">Optimus Main Campus</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-rose-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">NA</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Head of HR</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#e11d48;"><span>NA</span></div>
+                        <div class="team-role-badge">Head of HR</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mrs. Ngozi Adeyemi</h4>
-                    <p class="text-amber-600 font-medium text-sm">Head of HR</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Main Campus</p>
+                    <h4>Mrs. Ngozi Adeyemi</h4>
+                    <p class="role">Head of HR</p>
+                    <p class="campus">Optimus Main Campus</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-amber-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">AB</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Head Early</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#d97706;"><span>AB</span></div>
+                        <div class="team-role-badge">Head Early Years</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mrs. Amina Bello</h4>
-                    <p class="text-amber-600 font-medium text-sm">Head of Early Years</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Nursery</p>
+                    <h4>Mrs. Amina Bello</h4>
+                    <p class="role">Head of Early Years</p>
+                    <p class="campus">Optimus Nursery</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-teal-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">DO</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Head Primary</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#0d9488;"><span>DO</span></div>
+                        <div class="team-role-badge">Head Primary</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mr. David Okonkwo</h4>
-                    <p class="text-amber-600 font-medium text-sm">Head of Primary</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Primary</p>
+                    <h4>Mr. David Okonkwo</h4>
+                    <p class="role">Head of Primary</p>
+                    <p class="campus">Optimus Primary</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-indigo-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">GI</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Head Secondary</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#4f46e5;"><span>GI</span></div>
+                        <div class="team-role-badge">Head Secondary</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mrs. Grace Iwuoha</h4>
-                    <p class="text-amber-600 font-medium text-sm">Head of Secondary</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus High School</p>
+                    <h4>Mrs. Grace Iwuoha</h4>
+                    <p class="role">Head of Secondary</p>
+                    <p class="campus">Optimus High School</p>
                 </div>
-                <div class="text-center group">
-                    <div class="relative mb-4 mx-auto w-40 h-40">
-                        <div class="w-full h-full bg-cyan-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-white text-3xl font-bold">TB</span>
-                        </div>
-                        <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 gold-gradient text-white text-xs font-bold px-3 py-1 rounded-full shadow">Bursar</div>
+                <div class="team-member">
+                    <div class="team-avatar">
+                        <div class="team-avatar-circle" style="background:#0891b2;"><span>TB</span></div>
+                        <div class="team-role-badge">Bursar</div>
                     </div>
-                    <h4 class="font-bold text-[#012f5b] mt-4">Mr. Tunde Bakare</h4>
-                    <p class="text-amber-600 font-medium text-sm">Bursar</p>
-                    <p class="text-gray-500 text-xs mt-1">Optimus Main Campus</p>
+                    <h4>Mr. Tunde Bakare</h4>
+                    <p class="role">Bursar</p>
+                    <p class="campus">Optimus Main Campus</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Testimonials -->
-    <section id="testimonials" class="py-20 bg-[#012f5b] relative overflow-hidden">
-        <div class="absolute inset-0 opacity-5">
-            <div class="absolute top-10 left-10 w-40 h-40 border-2 border-white rounded-full"></div>
-            <div class="absolute bottom-10 right-10 w-60 h-60 border-2 border-white rounded-full"></div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 relative">
-            <div class="text-center mb-16">
-                <div class="inline-block bg-amber-500/20 border border-amber-400/30 rounded-full px-4 py-1.5 mb-4">
-                    <span class="text-amber-300 text-sm font-medium">Testimonials</span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">What Parents Say</h2>
-                <p class="text-gray-300 text-lg max-w-2xl mx-auto">Hear from parents who have entrusted us with their children's education.</p>
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="text-center">
+                <div class="section-badge"><span>Testimonials</span></div>
+                <h2 class="section-title">What Parents Say</h2>
+                <p class="section-subtitle mx-auto">Hear from parents who have entrusted us with their children's education.</p>
             </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                    <div class="flex gap-1 mb-4">
-                        <i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i>
-                    </div>
-                    <p class="text-gray-200 leading-relaxed mb-6 italic">"Optimus School has been a blessing to our family. The quality of education and the care given to our children is exceptional. My children have grown in confidence and academic excellence since joining."</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center"><span class="text-white font-bold">C</span></div>
+            <div class="testi-grid">
+                <div class="testi-card">
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"Optimus School has been a blessing to our family. The quality of education and the care given to our children is exceptional. My children have grown in confidence and academic excellence since joining."</p>
+                    <div class="testi-author">
+                        <div class="testi-author-avatar"><span>C</span></div>
                         <div>
-                            <div class="text-white font-semibold">Mrs. Chioma Adeleke</div>
-                            <div class="text-amber-400 text-sm">Parent</div>
+                            <div class="testi-author-name">Mrs. Chioma Adeleke</div>
+                            <div class="testi-author-role">Parent</div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                    <div class="flex gap-1 mb-4">
-                        <i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i>
-                    </div>
-                    <p class="text-gray-200 leading-relaxed mb-6 italic">"The teachers at Optimus are truly dedicated. They go above and beyond to ensure every child reaches their full potential. The school's facilities are world-class and the environment is very conducive for learning."</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center"><span class="text-white font-bold">O</span></div>
+                <div class="testi-card">
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"The teachers at Optimus are truly dedicated. They go above and beyond to ensure every child reaches their full potential. The school's facilities are world-class and the environment is very conducive for learning."</p>
+                    <div class="testi-author">
+                        <div class="testi-author-avatar"><span>O</span></div>
                         <div>
-                            <div class="text-white font-semibold">Mr. Olumide Akinwale</div>
-                            <div class="text-amber-400 text-sm">Parent</div>
+                            <div class="testi-author-name">Mr. Olumide Akinwale</div>
+                            <div class="testi-author-role">Parent</div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                    <div class="flex gap-1 mb-4">
-                        <i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i>
-                    </div>
-                    <p class="text-gray-200 leading-relaxed mb-6 italic">"I'm so impressed with the holistic approach to education at Optimus. My daughter not only excels academically but has also developed great social skills and confidence. Best decision we ever made!"</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center"><span class="text-white font-bold">B</span></div>
+                <div class="testi-card">
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"I'm so impressed with the holistic approach to education at Optimus. My daughter not only excels academically but has also developed great social skills and confidence. Best decision we ever made!"</p>
+                    <div class="testi-author">
+                        <div class="testi-author-avatar"><span>B</span></div>
                         <div>
-                            <div class="text-white font-semibold">Mrs. Blessing Ogunleye</div>
-                            <div class="text-amber-400 text-sm">Parent</div>
+                            <div class="testi-author-name">Mrs. Blessing Ogunleye</div>
+                            <div class="testi-author-role">Parent</div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                    <div class="flex gap-1 mb-4">
-                        <i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i><i class="fas fa-star text-amber-400"></i>
-                    </div>
-                    <p class="text-gray-200 leading-relaxed mb-6 italic">"The leadership and vision at Optimus School is remarkable. They truly prepare children for the future with their modern teaching methods and emphasis on character development. Highly recommended!"</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center"><span class="text-white font-bold">E</span></div>
+                <div class="testi-card">
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p>"The leadership and vision at Optimus School is remarkable. They truly prepare children for the future with their modern teaching methods and emphasis on character development. Highly recommended!"</p>
+                    <div class="testi-author">
+                        <div class="testi-author-avatar"><span>E</span></div>
                         <div>
-                            <div class="text-white font-semibold">Dr. Emeka Nwosu</div>
-                            <div class="text-amber-400 text-sm">Parent</div>
+                            <div class="testi-author-name">Dr. Emeka Nwosu</div>
+                            <div class="testi-author-role">Parent</div>
                         </div>
                     </div>
                 </div>
@@ -513,64 +634,51 @@
     </section>
 
     <!-- Admissions -->
-    <section id="admissions" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <div class="inline-block bg-amber-100 rounded-full px-4 py-1.5 mb-4">
-                        <span class="text-amber-700 text-sm font-medium">Admissions</span>
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-[#012f5b] mb-6">Join Us Today</h2>
-                    <p class="text-gray-600 text-lg leading-relaxed mb-6">Admission is offered upon success at the entrance examination and the availability of space in the candidate's desired year of entry. The subject areas for the entrance examination are English Language, Mathematics and General Paper. Exams are Computer Based.</p>
-                    <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
-                        <h3 class="text-xl font-bold text-[#012f5b] mb-4 flex items-center gap-2">
-                            <i class="fas fa-clipboard-list text-amber-500"></i> How to Apply
-                        </h3>
-                        <p class="text-gray-600 mb-4">You may walk into any of our school addresses and obtain an Application Form for ₦20,000. Completed forms should be submitted along with:</p>
-                        <ul class="space-y-3">
-                            <li class="flex items-center gap-3 text-gray-600">
-                                <div class="w-6 h-6 gold-gradient rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-white text-xs"></i></div>
-                                4 Passport photographs
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-600">
-                                <div class="w-6 h-6 gold-gradient rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-white text-xs"></i></div>
-                                4 photocopies of birth certificate
-                            </li>
-                            <li class="flex items-center gap-3 text-gray-600">
-                                <div class="w-6 h-6 gold-gradient rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-white text-xs"></i></div>
-                                Most recent academic reports from the last 2 years
-                            </li>
+    <section id="admissions" class="bg-gray">
+        <div class="container">
+            <div class="section-badge"><span>Admissions</span></div>
+            <h2 class="section-title">Join Us Today</h2>
+            <div class="admissions-grid">
+                <div class="admissions-text">
+                    <p>Admission is offered upon success at the entrance examination and the availability of space in the candidate's desired year of entry. The subject areas for the entrance examination are English Language, Mathematics and General Paper. Exams are Computer Based.</p>
+                    <div class="apply-box">
+                        <h3><i class="fas fa-clipboard-list"></i> How to Apply</h3>
+                        <p>You may walk into any of our school addresses and obtain an Application Form for ₦20,000. Completed forms should be submitted along with:</p>
+                        <ul class="apply-list">
+                            <li><div class="check-icon"><i class="fas fa-check"></i></div> 4 Passport photographs</li>
+                            <li><div class="check-icon"><i class="fas fa-check"></i></div> 4 photocopies of birth certificate</li>
+                            <li><div class="check-icon"><i class="fas fa-check"></i></div> Most recent academic reports from the last 2 years</li>
                         </ul>
                     </div>
-                    <a href="#contact" class="gold-gradient text-white px-8 py-3.5 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-lg inline-flex items-center gap-2">Apply Now <i class="fas fa-arrow-right"></i></a>
+                    <a href="#contact" class="btn-primary">Apply Now <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="space-y-6">
-                    <div class="flex gap-4 items-start">
-                        <div class="w-14 h-14 gold-gradient rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-white font-bold text-xl">1</span></div>
-                        <div>
-                            <h4 class="font-bold text-[#012f5b] text-lg">Obtain Application Form</h4>
-                            <p class="text-gray-600 mt-1">Visit our campus to pick up an application form or download from our portal.</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num gold"><span>1</span></div>
+                        <div class="step-text">
+                            <h4>Obtain Application Form</h4>
+                            <p>Visit our campus to pick up an application form or download from our portal.</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 items-start">
-                        <div class="w-14 h-14 bg-[#012f5b] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-white font-bold text-xl">2</span></div>
-                        <div>
-                            <h4 class="font-bold text-[#012f5b] text-lg">Submit Documents</h4>
-                            <p class="text-gray-600 mt-1">Complete the form and submit with all required documents and photographs.</p>
+                    <div class="step">
+                        <div class="step-num navy"><span>2</span></div>
+                        <div class="step-text">
+                            <h4>Submit Documents</h4>
+                            <p>Complete the form and submit with all required documents and photographs.</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 items-start">
-                        <div class="w-14 h-14 gold-gradient rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-white font-bold text-xl">3</span></div>
-                        <div>
-                            <h4 class="font-bold text-[#012f5b] text-lg">Take Entrance Exam</h4>
-                            <p class="text-gray-600 mt-1">Sit for the computer-based entrance examination in English, Mathematics, and General Paper.</p>
+                    <div class="step">
+                        <div class="step-num gold"><span>3</span></div>
+                        <div class="step-text">
+                            <h4>Take Entrance Exam</h4>
+                            <p>Sit for the computer-based entrance examination in English, Mathematics, and General Paper.</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 items-start">
-                        <div class="w-14 h-14 bg-[#012f5b] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><span class="text-white font-bold text-xl">4</span></div>
-                        <div>
-                            <h4 class="font-bold text-[#012f5b] text-lg">Receive Admission</h4>
-                            <p class="text-gray-600 mt-1">Successful candidates will receive admission letters and enrollment details.</p>
+                    <div class="step">
+                        <div class="step-num navy"><span>4</span></div>
+                        <div class="step-text">
+                            <h4>Receive Admission</h4>
+                            <p>Successful candidates will receive admission letters and enrollment details.</p>
                         </div>
                     </div>
                 </div>
@@ -579,108 +687,105 @@
     </section>
 
     <!-- CTA -->
-    <section class="py-16 gold-gradient relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 30px 30px;"></div>
-        <div class="max-w-7xl mx-auto px-4 relative text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get Started Today</h2>
-            <p class="text-white/90 text-lg max-w-2xl mx-auto mb-8">Give your child the best future with world-class education. A legacy for champions starts here at Optimus School.</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#admissions" class="bg-[#012f5b] text-white px-8 py-3.5 rounded-full font-semibold hover:bg-[#011d3a] transition-colors shadow-lg inline-flex items-center gap-2"><i class="fas fa-paper-plane"></i> Apply Now</a>
-                <a href="#contact" class="border-2 border-white text-white px-8 py-3.5 rounded-full font-semibold hover:bg-white/10 transition-colors inline-flex items-center gap-2"><i class="fas fa-phone"></i> Contact Us</a>
+    <section class="cta">
+        <div class="cta-pattern"></div>
+        <div class="cta-content">
+            <h2>Get Started Today</h2>
+            <p>Give your child the best future with world-class education. A legacy for champions starts here at Optimus School.</p>
+            <div class="cta-buttons">
+                <a href="#admissions" class="btn-dark"><i class="fas fa-paper-plane"></i> Apply Now</a>
+                <a href="#contact" class="btn-outline-white"><i class="fas fa-phone"></i> Contact Us</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact" class="bg-[#011d3a] text-white">
-        <div class="max-w-7xl mx-auto px-4 py-16">
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center"><span class="text-white font-bold text-xl">O</span></div>
-                        <div>
-                            <h3 class="text-xl font-bold">OPTIMUS</h3>
-                            <p class="text-xs text-gray-400 -mt-1">SCHOOL</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed mb-6">Optimus School is a leading educational institution committed to raising globally-minded, result-driven students rooted in strong values and prepared to thrive anywhere in the world.</p>
-                    <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors"><i class="fab fa-facebook-f text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors"><i class="fab fa-twitter text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors"><i class="fab fa-instagram text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors"><i class="fab fa-linkedin-in text-sm"></i></a>
-                        <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-amber-500 transition-colors"><i class="fab fa-youtube text-sm"></i></a>
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom:24px;">
+                    <div class="logo-icon" style="background:var(--gold);"><span style="color:white;">O</span></div>
+                    <div class="logo-text">
+                        <h1 style="color:white;">OPTIMUS</h1>
+                        <p style="color:var(--gray-400);">SCHOOL</p>
                     </div>
                 </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#home" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Home</a></li>
-                        <li><a href="#about" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> About Us</a></li>
-                        <li><a href="#programs" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Programs</a></li>
-                        <li><a href="#admissions" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Admissions</a></li>
-                        <li><a href="#team" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Our Team</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Our Programs</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#programs" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Crèche</a></li>
-                        <li><a href="#programs" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Early Years</a></li>
-                        <li><a href="#programs" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> Primary School</a></li>
-                        <li><a href="#programs" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> High School</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-amber-400 transition-colors flex items-center gap-2"><i class="fas fa-chevron-right text-xs text-amber-500"></i> After School</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Contact Us</h4>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3">
-                            <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"><i class="fas fa-map-marker-alt text-amber-400 text-sm"></i></div>
-                            <span class="text-gray-400">123 Education Avenue, GRA, Benin City, Edo State, Nigeria</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-phone text-amber-400 text-sm"></i></div>
-                            <div>
-                                <a href="tel:+2348012345678" class="text-gray-400 hover:text-amber-400 transition-colors block">+234 801-234-5678</a>
-                                <a href="tel:+2349138045398" class="text-gray-400 hover:text-amber-400 transition-colors block">+234 913-804-5398</a>
-                            </div>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-envelope text-amber-400 text-sm"></i></div>
-                            <a href="mailto:admin@optimusschool.ng" class="text-gray-400 hover:text-amber-400 transition-colors">admin@optimusschool.ng</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-clock text-amber-400 text-sm"></i></div>
-                            <span class="text-gray-400">Mon - Fri: 7:30AM - 4:00PM</span>
-                        </li>
-                    </ul>
+                <p>Optimus School is a leading educational institution committed to raising globally-minded, result-driven students rooted in strong values and prepared to thrive anywhere in the world.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-        </div>
-        <div class="border-t border-white/10">
-            <div class="max-w-7xl mx-auto px-4 py-6">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p class="text-gray-400 text-sm">© 2024 Optimus School. All rights reserved.</p>
-                    <div class="flex gap-6">
-                        <a href="#" class="text-gray-400 text-sm hover:text-amber-400 transition-colors">Privacy Policy</a>
-                        <a href="#" class="text-gray-400 text-sm hover:text-amber-400 transition-colors">Terms of Service</a>
-                    </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="#home"><i class="fas fa-chevron-right"></i> Home</a>
+                    <a href="#about"><i class="fas fa-chevron-right"></i> About Us</a>
+                    <a href="#programs"><i class="fas fa-chevron-right"></i> Programs</a>
+                    <a href="#admissions"><i class="fas fa-chevron-right"></i> Admissions</a>
+                    <a href="#team"><i class="fas fa-chevron-right"></i> Our Team</a>
+                    <a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a>
                 </div>
+            </div>
+            <div class="footer-col">
+                <h4>Our Programs</h4>
+                <div class="footer-links">
+                    <a href="#programs"><i class="fas fa-chevron-right"></i> Crèche</a>
+                    <a href="#programs"><i class="fas fa-chevron-right"></i> Early Years</a>
+                    <a href="#programs"><i class="fas fa-chevron-right"></i> Primary School</a>
+                    <a href="#programs"><i class="fas fa-chevron-right"></i> High School</a>
+                    <a href="#"><i class="fas fa-chevron-right"></i> After School</a>
+                    <a href="#"><i class="fas fa-chevron-right"></i> Holiday Club</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span>123 Education Avenue, GRA, Benin City, Edo State, Nigeria</span>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <a href="tel:+2348012345678" style="color:var(--gray-400);display:block;">+234 801-234-5678</a>
+                            <a href="tel:+2349138045398" style="color:var(--gray-400);display:block;">+234 913-804-5398</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-envelope"></i></div>
+                        <a href="mailto:admin@optimusschool.ng" style="color:var(--gray-400);">admin@optimusschool.ng</a>
+                    </li>
+                    <li>
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <span>Mon - Fri: 7:30AM - 4:00PM</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Optimus School. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Sitemap</a>
             </div>
         </div>
     </footer>
 
     <!-- Scroll to Top -->
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-8 right-8 w-12 h-12 gold-gradient rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity z-50">
-        <i class="fas fa-arrow-up text-white"></i>
+    <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
         // Mobile menu
         function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.getElementById('menuIcon');
+            var menu = document.getElementById('mobileMenu');
+            var icon = document.getElementById('menuIcon');
             menu.classList.toggle('open');
             icon.className = menu.classList.contains('open') ? 'fas fa-times' : 'fas fa-bars';
         }
@@ -689,31 +794,32 @@
             document.getElementById('menuIcon').className = 'fas fa-bars';
         }
 
-        // Navbar scroll effect
+        // Navbar scroll
         window.addEventListener('scroll', function() {
-            const nav = document.getElementById('navbar');
+            var nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
-                nav.classList.add('nav-shadow', 'bg-white');
+                nav.classList.add('scrolled');
             } else {
-                nav.classList.remove('nav-shadow');
+                nav.classList.remove('scrolled');
             }
         });
 
         // Hero slider
-        const slides = [
+        var slides = [
             { title: "Nurturing Excellence", desc: "Where every child's potential is unlocked and champions are made" },
             { title: "Home for Champions", desc: "Building tomorrow's leaders through quality education and character development" },
             { title: "World-Class Education", desc: "Empowering students to excel in the 21st century with innovative learning" }
         ];
-        let currentSlide = 0;
+        var currentSlide = 0;
 
         function goToSlide(index) {
             currentSlide = index;
             document.getElementById('heroTitle').textContent = slides[index].title;
             document.getElementById('heroDesc').textContent = slides[index].desc;
-            document.querySelectorAll('.slide-dot').forEach((dot, i) => {
-                dot.className = 'slide-dot h-2.5 rounded-full transition-all duration-300 ' + (i === index ? 'w-10 bg-amber-400' : 'w-2.5 bg-white/50');
-            });
+            var dots = document.querySelectorAll('.hero-dot');
+            for (var i = 0; i < dots.length; i++) {
+                dots[i].className = 'hero-dot' + (i === index ? ' active' : '');
+            }
         }
 
         setInterval(function() {
